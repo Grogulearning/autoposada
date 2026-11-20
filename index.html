@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autoposada 2026</title>
+<meta name="description" content="Estás invitado a la Autoposada · Viernes 11 de diciembre, 6:00 pm · Restaurante Italiano Isabela">
+<meta property="og:title" content="Autoposada 2026">
+<meta property="og:description" content="Viernes 11 de diciembre · 6:00 pm · Restaurante Italiano Isabela">
+<meta property="og:image" content="https://grogulearning.github.io/autoposada/fondo.jpg">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Rojo nochebuena con follaje, tarjetas crema con filete dorado; una columna tipo papelería */
+  --rojo:#a3122b; --rojo-osc:#7d0b1f; --rojo-hoja:#8c0f25;
+  --crema:#f4ecd9; --olivo:#4c5a35; --gris:#6f6a5c; --oro:#c4a15a;
+  --script:"Pinyon Script", "Brush Script MT", cursive;
+  --serif:"Cormorant Garamond", Georgia, serif;
+  --body:"Jost", "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none !important}
+html,body{background:var(--rojo);color:var(--olivo);font-family:var(--body);line-height:1.55}
+body{min-height:100%;overflow-x:hidden;
+  background-color:var(--rojo);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='%238a0e24'%3E%3Cpath d='M12 70 C40 22 98 18 128 52 C96 82 46 92 12 70Z'/%3E%3Cpath d='M150 170 C168 124 222 110 248 140 C222 176 176 188 150 170Z'/%3E%3Cpath d='M40 200 C52 166 96 150 120 170 C102 204 64 218 40 200Z'/%3E%3Cpath d='M170 40 C186 18 220 14 234 34 C218 56 188 60 170 40Z'/%3E%3C/g%3E%3Cg stroke='%238a0e24' stroke-width='3' fill='none' stroke-linecap='round'%3E%3Cpath d='M150 70 L232 104'/%3E%3Cpath d='M166 77 l-6 -14 M182 83 l-6 -14 M198 90 l-6 -14 M214 97 l-6 -14 M166 77 l-2 15 M182 83 l-2 15 M198 90 l-2 15 M214 97 l-2 15'/%3E%3Cpath d='M20 120 C40 130 60 128 84 116'/%3E%3Cpath d='M84 116 l8 -10 M84 116 l10 4'/%3E%3C/g%3E%3Cg fill='%23f4ecd9' opacity='.85'%3E%3Ccircle cx='100' cy='120' r='7'/%3E%3Ccircle cx='112' cy='132' r='5'/%3E%3Ccircle cx='226' cy='212' r='6'/%3E%3C/g%3E%3Cg fill='%23c4a15a' opacity='.9'%3E%3Ccircle cx='140' cy='230' r='4'/%3E%3Ccircle cx='60' cy='30' r='3.5'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:260px 260px;
+}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:url("fondo.jpg") center / cover no-repeat, var(--rojo)}
+#brillos{position:fixed;inset:0;pointer-events:none;z-index:0}
+main{position:relative;z-index:1;max-width:540px;margin:0 auto;padding:44px 18px 56px;display:flex;flex-direction:column;gap:22px}
+
+.titulo-sup{text-align:center;color:var(--crema);font:600 .82rem var(--body);letter-spacing:.42em;text-transform:uppercase}
+
+/* Tarjeta principal */
+.tarjeta-wrap{position:relative;padding:26px 14px}
+.tarjeta{position:relative;background:var(--crema);padding:44px 28px 38px;text-align:center;
+  box-shadow:0 22px 50px rgba(50,4,12,.45);display:flex;flex-direction:column;align-items:center;gap:6px}
+.tarjeta::before{content:"";position:absolute;inset:9px;border:1.5px solid var(--oro);pointer-events:none}
+.invita{font:500 .82rem var(--body);letter-spacing:.24em;text-transform:uppercase;color:var(--olivo)}
+h1{font-family:var(--script);font-weight:400;color:var(--rojo);font-size:clamp(4rem,19vw,6.2rem);line-height:1;margin:2px 0 0;text-wrap:balance}
+.fecha{font-family:var(--serif);font-weight:500;font-size:2.3rem;color:var(--gris);letter-spacing:.04em;font-variant-numeric:tabular-nums;line-height:1}
+.dia{font:600 .95rem var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--olivo)}
+.sep{width:56px;height:1px;background:var(--oro);margin:12px 0}
+.donde{font:500 .95rem var(--body);color:var(--rojo)}
+.donde b{font-family:var(--serif);font-size:1.6rem;font-weight:600;display:block;line-height:1.1}
+
+/* Nochebuenas */
+.flor{position:absolute;width:118px;height:118px;z-index:2;filter:drop-shadow(0 6px 10px rgba(50,4,12,.35))}
+.flor svg{width:100%;height:100%;animation:girar 14s ease-in-out infinite}
+.flor-a{top:-6px;left:-8px}
+.flor-b{bottom:-34px;right:-10px;width:124px;height:124px}
+.flor-b svg{animation-duration:17s;animation-direction:reverse}
+@keyframes girar{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.brota{animation:brotar 1.1s cubic-bezier(.2,.8,.2,1.2) both}
+.flor-b.brota{animation-delay:.25s}
+@keyframes brotar{from{transform:scale(.2) rotate(-40deg);opacity:0}to{transform:none;opacity:1}}
+
+.entra{animation:subir .9s cubic-bezier(.2,.7,.2,1) both}
+.d1{animation-delay:.2s}.d2{animation-delay:.4s}.d3{animation-delay:.6s}.d4{animation-delay:.8s}.d5{animation-delay:1s}
+@keyframes subir{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* Botones */
+.acciones{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:8px;justify-content:center;padding:11px 18px;border-radius:999px;font:600 .82rem var(--body);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:1.5px solid var(--rojo);transition:transform .15s,background .2s}
+.btn:active{transform:scale(.97)}
+.btn-rojo{background:var(--rojo);color:var(--crema)}
+.btn-rojo:hover{background:var(--rojo-osc)}
+.btn-linea{background:transparent;color:var(--rojo)}
+.btn-linea:hover{background:rgba(163,18,43,.08)}
+.btn:focus-visible,input:focus-visible,button:focus-visible{outline:2px solid var(--oro);outline-offset:3px}
+
+/* Cuenta regresiva */
+.cuenta{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cuenta div{background:rgba(125,11,31,.75);border:1px solid rgba(196,161,90,.6);padding:12px 4px;text-align:center;color:var(--crema)}
+.cuenta b{display:block;font-family:var(--serif);font-size:2.1rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.cuenta span{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;opacity:.85}
+.cuenta-fin{text-align:center;font-family:var(--script);font-size:2.6rem;color:var(--crema)}
+
+/* Bloques crema */
+.bloque{position:relative;background:var(--crema);padding:28px 24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 14px 34px rgba(50,4,12,.35)}
+.bloque::before{content:"";position:absolute;inset:7px;border:1px solid var(--oro);pointer-events:none}
+.etq{font:600 .74rem var(--body);letter-spacing:.28em;text-transform:uppercase;color:var(--olivo);text-align:center}
+.bloque h2{font-family:var(--script);font-weight:400;font-size:2.6rem;line-height:1.05;color:var(--rojo);text-align:center;text-wrap:balance}
+.intercambio{display:flex;align-items:center;gap:18px;justify-content:center;flex-wrap:wrap;text-align:left}
+.monto{font-family:var(--serif);font-size:3.2rem;font-weight:600;color:var(--rojo);line-height:1;font-variant-numeric:tabular-nums}
+.monto sup{font-size:1.3rem;vertical-align:top;margin-right:2px}
+.intercambio p.txt{max-width:30ch;color:var(--gris);font-size:.95rem}
+
+/* Buzones: postales antiguas */
+.buscador{position:relative;width:100%;padding:11px 16px;border-radius:999px;border:1px solid rgba(76,90,53,.4);background:#fffaf0;color:var(--olivo);font:400 .95rem var(--body)}
+.postales{position:relative;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;padding:4px}
+.postal{all:unset;box-sizing:border-box;position:relative;cursor:pointer;aspect-ratio:16/10;padding:8px;background:repeating-linear-gradient(-45deg,#a3122b 0 11px,#f6eedb 11px 16px,#2e5b3b 16px 27px,#f6eedb 27px 32px);
+  box-shadow:0 6px 16px rgba(60,20,10,.25);transform:rotate(var(--rot,0deg));transition:transform .25s, box-shadow .25s}
+.postal .cara{position:relative;height:100%;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;
+  background:repeating-linear-gradient(0deg, transparent 0 23px, rgba(111,106,92,.13) 23px 24px) 0 55% / 55% 40% no-repeat, radial-gradient(120% 90% at 30% 20%, #fbf5e6 0%, #efe3c8 80%, #e6d6b2 100%);
+  box-shadow:inset 0 0 18px rgba(150,110,50,.18)}
+.postal:nth-child(odd){--rot:-1.2deg}.postal:nth-child(even){--rot:1deg}
+.postal:hover,.postal:focus-visible{transform:rotate(0) translateY(-4px) scale(1.02);box-shadow:0 14px 28px rgba(60,20,10,.3)}
+.postal:focus-visible{outline:2px solid var(--oro);outline-offset:4px}
+.postal .para{font:500 .66rem var(--body);letter-spacing:.24em;text-transform:uppercase;color:var(--gris)}
+.postal .nombre{font-family:var(--script);font-size:2.1rem;line-height:1;color:var(--rojo);word-break:break-word;max-width:68%}
+.postal .pie{display:flex;justify-content:space-between;align-items:flex-end;font:500 .72rem var(--body);letter-spacing:.08em;color:var(--olivo)}
+.postal .abrir{color:var(--rojo);text-transform:uppercase;letter-spacing:.18em;font-size:.66rem}
+.sello{position:absolute;top:10px;right:10px;width:48px;height:58px;background:var(--rojo);padding:3px;border:3px dotted #f6eedb;box-shadow:0 0 0 2px var(--rojo),1px 2px 4px rgba(60,20,10,.3)}
+.sello div{width:100%;height:100%;border:1px solid rgba(244,236,217,.7);display:grid;place-items:center}
+.sello svg{width:32px;height:32px}
+.matasellos{position:absolute;z-index:1;top:22px;right:44px;width:54px;height:54px;border:1.5px solid rgba(76,90,53,.55);border-radius:50%;display:grid;place-items:center;text-align:center;
+  font:600 .5rem/1.2 var(--body);letter-spacing:.08em;color:rgba(76,90,53,.75);transform:rotate(-14deg);pointer-events:none}
+.vacio{border:1px dashed rgba(76,90,53,.45);padding:18px;text-align:center;color:var(--gris);font-size:.93rem;grid-column:1/-1}
+.organiza{position:relative;align-self:center;background:none;border:0;color:var(--olivo);font:500 .82rem var(--body);text-decoration:underline;cursor:pointer;padding:4px 0}
+.aviso{position:relative;font-size:.85rem;color:var(--rojo);text-align:center}
+
+/* Carta abierta */
+dialog{margin:auto;border:0;padding:0;background:transparent;width:min(94vw,460px);max-height:90vh;overflow:visible}
+dialog::backdrop{background:rgba(60,4,14,.65)}
+.carta{position:relative;background:radial-gradient(130% 100% at 30% 10%, #fcf7ea 0%, #f0e5cb 80%);border:1px solid #d8c6a0;padding:26px 22px 22px;max-height:88vh;overflow:auto;
+  box-shadow:0 24px 60px rgba(0,0,0,.45);transform-origin:top center}
+#dlg-carta .carta{display:none}
+#dlg-carta.fase-carta .carta{display:block;animation:abrir .55s cubic-bezier(.2,.8,.2,1)}
+#dlg-form[open] .carta{animation:abrir .55s cubic-bezier(.2,.8,.2,1)}
+.escena{display:none;padding-top:130px}
+#dlg-carta.fase-sobre .escena{display:block}
+.sobre{position:relative;width:min(84vw,340px);aspect-ratio:16/10;margin:0 auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45))}
+.sobre .fondo,.sobre .bolsa,.sobre .solapa{position:absolute;background:repeating-linear-gradient(-45deg,#a3122b 0 11px,#f6eedb 11px 16px,#2e5b3b 16px 27px,#f6eedb 27px 32px)}
+.sobre .fondo{inset:0;z-index:1}
+.sobre .fondo::before{content:"";position:absolute;inset:8px;background:#d9c69c}
+.sobre .hoja{position:absolute;left:7%;right:7%;top:6%;height:88%;z-index:2;background:radial-gradient(120% 100% at 30% 10%,#fffbef,#f1e6cc);border:1px solid #d8c6a0;
+  display:flex;flex-direction:column;align-items:center;padding-top:14px;gap:2px}
+.sobre .hoja small{font:500 .62rem var(--body);letter-spacing:.24em;text-transform:uppercase;color:var(--gris)}
+.sobre .hoja b{font-family:var(--script);font-weight:400;font-size:2rem;line-height:1;color:var(--rojo);max-width:90%;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sobre .bolsa{inset:0;z-index:3;padding:8px}
+.sobre .bolsa div{width:100%;height:100%;background:radial-gradient(120% 90% at 50% 0%,#f8f0dc,#eadbb7)}
+.sobre .bolsa svg{position:absolute;inset:8px;width:calc(100% - 16px);height:calc(100% - 16px)}
+.sobre .solapa{left:0;right:0;top:0;height:58%;z-index:4;transform-origin:top center;clip-path:polygon(0 0,100% 0,50% 100%)}
+.sobre .solapa::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#f3e8cf,#e3d1a8);clip-path:polygon(4% 0,96% 0,50% 86%)}
+.lacre{position:absolute;left:50%;top:58%;width:46px;height:46px;margin:-23px 0 0 -23px;z-index:5;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#c42a40,#8c0f25 70%);box-shadow:0 2px 4px rgba(0,0,0,.35),inset 0 0 0 4px rgba(0,0,0,.12);display:grid;place-items:center}
+.lacre svg{width:30px;height:30px}
+#dlg-carta.fase-sobre .lacre{animation:romper .35s ease-in forwards}
+#dlg-carta.fase-sobre .solapa{animation:solapa .6s .3s cubic-bezier(.4,0,.2,1) forwards}
+#dlg-carta.fase-sobre .hoja{animation:sacar .7s .85s cubic-bezier(.2,.8,.2,1) forwards}
+#dlg-carta.fase-sobre .sobre{animation:irse .35s 1.65s ease-in forwards}
+@keyframes romper{to{transform:scale(1.25);opacity:0}}
+@keyframes solapa{0%{transform:perspective(700px) rotateX(0);z-index:4}49%{z-index:4}50%{z-index:0}100%{transform:perspective(700px) rotateX(180deg);z-index:0}}
+@keyframes sacar{to{transform:translateY(-68%)}}
+@keyframes irse{to{transform:translateY(18px) scale(.96);opacity:0}}
+@keyframes abrir{from{transform:perspective(900px) rotateX(-75deg);opacity:0}to{transform:none;opacity:1}}
+.carta .cerrar{position:absolute;top:8px;right:10px;background:none;border:0;font-size:1.5rem;color:var(--gris);cursor:pointer;padding:4px 8px;line-height:1}
+.carta .para{font:500 .7rem var(--body);letter-spacing:.24em;text-transform:uppercase;color:var(--gris)}
+.carta h3{font-family:var(--script);font-weight:400;font-size:2.7rem;line-height:1.05;color:var(--rojo);margin-bottom:12px;word-break:break-word}
+.regalos{list-style:none;display:flex;flex-direction:column;gap:12px}
+.regalo{display:grid;grid-template-columns:84px 1fr;gap:12px;align-items:center;background:#fffaf0;border:1px solid #e3d5b5;padding:10px}
+.regalo img,.regalo .sinfoto{width:84px;height:84px;object-fit:cover;background:#efe6d2;display:grid;place-items:center;color:var(--gris);font-size:.7rem;text-align:center}
+.regalo .num{font:600 .64rem var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.regalo .tit{font-family:var(--serif);font-size:1.15rem;font-weight:600;line-height:1.15;color:var(--olivo);word-break:break-word}
+.regalo a{display:inline-block;margin-top:6px;font:600 .72rem var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--rojo)}
+.carta .admin{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+
+/* Formulario */
+.form-carta form{display:flex;flex-direction:column;gap:12px}
+.form-carta label{display:flex;flex-direction:column;gap:4px;font:500 .72rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--olivo)}
+.form-carta input{padding:9px 11px;border:1px solid rgba(76,90,53,.4);background:#fffaf0;color:var(--olivo);font:400 .92rem var(--body);text-transform:none;letter-spacing:0}
+.form-carta fieldset{border:1px solid #e3d5b5;padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px}
+.form-carta legend{font:600 .68rem var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--rojo);padding:0 6px}
+.form-carta .prev{font-size:.75rem;color:var(--gris);text-transform:none;letter-spacing:0}
+
+footer{text-align:center;color:var(--crema)}
+footer .firma{font-family:var(--script);font-size:2.6rem;line-height:1.1}
+footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;opacity:.85}
+
+@media (max-width:400px){ .flor{width:92px;height:92px} .flor-b{width:104px;height:104px} .tarjeta{padding:46px 20px 40px} }
+@media (prefers-reduced-motion: reduce){ .flor svg,.brota,.entra{animation:none} }
+</style>
+</head>
+<body>
+<canvas id="brillos" aria-hidden="true"></canvas>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="nochebuena">
+      <g fill="#4c5a35">
+        <path d="M60 60 L60 6 C68 20 70 40 60 60Z" transform="rotate(36 60 60)"/>
+        <path d="M60 60 L60 6 C68 20 70 40 60 60Z" transform="rotate(108 60 60)"/>
+        <path d="M60 60 L60 6 C68 20 70 40 60 60Z" transform="rotate(180 60 60)"/>
+        <path d="M60 60 L60 6 C68 20 70 40 60 60Z" transform="rotate(252 60 60)"/>
+        <path d="M60 60 L60 6 C68 20 70 40 60 60Z" transform="rotate(324 60 60)"/>
+        <path d="M60 60 C46 46 48 18 60 4 C72 18 74 46 60 60Z" transform="rotate(36 60 60)"/>
+        <path d="M60 60 C46 46 48 18 60 4 C72 18 74 46 60 60Z" transform="rotate(108 60 60)"/>
+        <path d="M60 60 C46 46 48 18 60 4 C72 18 74 46 60 60Z" transform="rotate(180 60 60)"/>
+        <path d="M60 60 C46 46 48 18 60 4 C72 18 74 46 60 60Z" transform="rotate(252 60 60)"/>
+        <path d="M60 60 C46 46 48 18 60 4 C72 18 74 46 60 60Z" transform="rotate(324 60 60)"/>
+      </g>
+      <g>
+        <g transform="rotate(0 60 60)"><path d="M60 60 C44 44 46 16 60 2 C74 16 76 44 60 60Z" fill="#b8142f"/><path d="M60 54 L60 12" stroke="#7d0b1f" stroke-width="1.4"/></g>
+        <g transform="rotate(72 60 60)"><path d="M60 60 C44 44 46 16 60 2 C74 16 76 44 60 60Z" fill="#a3122b"/><path d="M60 54 L60 12" stroke="#7d0b1f" stroke-width="1.4"/></g>
+        <g transform="rotate(144 60 60)"><path d="M60 60 C44 44 46 16 60 2 C74 16 76 44 60 60Z" fill="#b8142f"/><path d="M60 54 L60 12" stroke="#7d0b1f" stroke-width="1.4"/></g>
+        <g transform="rotate(216 60 60)"><path d="M60 60 C44 44 46 16 60 2 C74 16 76 44 60 60Z" fill="#a3122b"/><path d="M60 54 L60 12" stroke="#7d0b1f" stroke-width="1.4"/></g>
+        <g transform="rotate(288 60 60)"><path d="M60 60 C44 44 46 16 60 2 C74 16 76 44 60 60Z" fill="#b8142f"/><path d="M60 54 L60 12" stroke="#7d0b1f" stroke-width="1.4"/></g>
+      </g>
+      <g fill="#c4a15a">
+        <circle cx="60" cy="60" r="4"/><circle cx="53" cy="56" r="3"/><circle cx="67" cy="56" r="3"/>
+        <circle cx="55" cy="66" r="3"/><circle cx="65" cy="66" r="3"/>
+      </g>
+      <g fill="#f4ecd9"><circle cx="60" cy="52" r="1.6"/><circle cx="52" cy="62" r="1.6"/><circle cx="68" cy="62" r="1.6"/></g>
+    </g>
+  </defs>
+</svg>
+
+<main>
+  
+
+  <div class="tarjeta-wrap">
+    <div class="flor flor-a brota" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#nochebuena"/></svg></div>
+    <section class="tarjeta">
+      <p class="invita entra d1">Estás invitado a la</p>
+      <h1 class="entra d2">Autoposada</h1>
+      <p class="fecha entra d3">11 · 12 · 26</p>
+      <p class="dia entra d3">Viernes · 6:00 pm</p>
+      <span class="sep entra d4" aria-hidden="true"></span>
+      <p class="donde entra d4">Te esperamos en<b>Restaurante Italiano Isabela</b></p>
+      <div class="acciones entra d5" style="margin-top:12px">
+        <a class="btn btn-rojo" href="https://maps.app.goo.gl/mbYAhnce4QPvMEsv8" target="_blank" rel="noopener">Cómo llegar</a>
+      </div>
+    </section>
+    <div class="flor flor-b brota" aria-hidden="true"><svg viewBox="0 0 120 120"><use href="#nochebuena"/></svg></div>
+  </div>
+
+  <section class="entra d5" aria-label="Cuenta regresiva">
+    <div class="cuenta" id="cuenta">
+      <div><b id="cd-d">21</b><span>días</span></div>
+      <div><b id="cd-h">01</b><span>horas</span></div>
+      <div><b id="cd-m">40</b><span>min</span></div>
+      <div><b id="cd-s">00</b><span>seg</span></div>
+    </div>
+  </section>
+
+  <section class="bloque">
+    <span class="etq">Intercambio de regalos</span>
+    <div class="intercambio">
+      <p class="monto"><sup>$</sup>500</p>
+      <p class="txt">Trae tu regalo envuelto y con el nombre de quien te tocó. Revisa abajo qué le gustaría.</p>
+    </div>
+  </section>
+
+  <section class="bloque" id="seccion-buzones">
+    <span class="etq">Buzones</span>
+    <h2>¿Qué le gustaría a quien te tocó?</h2>
+    <p class="aviso" style="color:var(--gris)">Toca una postal para abrirla.</p>
+    <input class="buscador" id="buscar" type="search" placeholder="Busca un nombre" aria-label="Buscar un buzón por nombre">
+    <div class="postales" id="buzones"></div>
+    <p class="aviso" id="aviso" hidden></p>
+  </section>
+
+  <footer>
+    <p class="firma">¡Te esperamos!</p>
+    <p>Autopaquete · Guadalajara</p>
+  </footer>
+</main>
+
+<dialog id="dlg-carta" aria-label="Buzón">
+  <div class="escena" aria-hidden="true">
+    <div class="sobre">
+      <div class="fondo"></div>
+      <div class="hoja"><small>Para</small><b id="s-nombre"></b></div>
+      <div class="bolsa"><div></div><svg viewBox="0 0 100 100" preserveAspectRatio="none"><polyline points="0,100 50,48 100,100" fill="none" stroke="rgba(130,100,50,.35)" stroke-width=".6" vector-effect="non-scaling-stroke"/></svg></div>
+      <div class="solapa"></div>
+      <div class="lacre"><svg viewBox="0 0 120 120"><use href="#nochebuena"/></svg></div>
+    </div>
+  </div>
+  <div class="carta">
+    <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">×</button>
+    <p class="para">Buzón de</p>
+    <h3 id="c-nombre"></h3>
+    <ul class="regalos" id="c-regalos"></ul>
+  </div>
+</dialog>
+<script>
+const estado = {buzones:[]};
+
+/* Cuenta regresiva */
+const FECHA = new Date("2026-12-11T18:00:00-06:00").getTime();
+function pad(n){return String(n).padStart(2,"0")}
+function tic(){
+  const ms = FECHA - Date.now();
+  const box = document.getElementById("cuenta");
+  if (ms <= 0){ box.outerHTML = '<p class="cuenta-fin">¡Hoy es la Autoposada!</p>'; return false; }
+  const s = Math.floor(ms/1000);
+  document.getElementById("cd-d").textContent = Math.floor(s/86400);
+  document.getElementById("cd-h").textContent = pad(Math.floor(s%86400/3600));
+  document.getElementById("cd-m").textContent = pad(Math.floor(s%3600/60));
+  document.getElementById("cd-s").textContent = pad(s%60);
+  return true;
+}
+if (tic()) { const t = setInterval(()=>{ if(!tic()) clearInterval(t); }, 1000); }
+
+/* Brillos que caen */
+(function(){
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const c = document.getElementById("brillos"), ctx = c.getContext("2d");
+  let W, H; const ps = [];
+  function size(){ const r = window.devicePixelRatio||1; W = innerWidth; H = innerHeight; c.width=W*r; c.height=H*r; c.style.width=W+"px"; c.style.height=H+"px"; ctx.setTransform(r,0,0,r,0,0); }
+  size(); addEventListener("resize", size);
+  const N = Math.min(70, Math.round(innerWidth/7));
+  for (let i=0;i<N;i++) ps.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2+.6,v:Math.random()*.55+.2,d:Math.random()*6.28,oro:Math.random()<.4});
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for (const p of ps){
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.283);
+      ctx.fillStyle = p.oro ? "rgba(214,182,110,.8)" : "rgba(244,236,217,.7)"; ctx.fill();
+      if (!reduce){ p.y+=p.v; p.d+=.01; p.x+=Math.sin(p.d)*.35; if (p.y>H+5){p.y=-5;p.x=Math.random()*W;} }
+    }
+    if (!reduce) requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* Buzones: se leen de buzones.json */
+let abierto = -1, timerSobre = 0;
+const $ = id => document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function norm(o){ return typeof o === "string" ? {titulo:o, link:"", foto:""} : {titulo:o.titulo||"", link:o.link||"", foto:o.foto||""}; }
+function seguro(u){ return /^https?:\/\//i.test(u) ? u : ""; }
+function fotoOk(u){ return /^(data:image\/|fotos\/|https:\/\/)/.test(u) ? u : ""; }
+const SELLO = '<span class="sello"><div><svg viewBox="0 0 120 120"><use href="#nochebuena"/></svg></div></span><span class="matasellos">GDL<br>11·DIC<br>2026</span>';
+
+function render(){
+  const q = ($("buscar").value||"").trim().toLowerCase();
+  const cont = $("buzones");
+  if (!estado.buzones.length){ cont.innerHTML = '<div class="vacio">Los buzones se irán llenando con las opciones de regalo que cada quien comparta en el grupo de WhatsApp.</div>'; return; }
+  const lista = estado.buzones.map((b,i)=>({...b,i})).filter(b=>!q || b.nombre.toLowerCase().includes(q)).sort((a,b)=>a.nombre.localeCompare(b.nombre,"es"));
+  if (!lista.length){ cont.innerHTML = '<div class="vacio">No hay ningún buzón con ese nombre.</div>'; return; }
+  cont.innerHTML = lista.map(b => {
+    const n = b.opciones.length;
+    return '<button class="postal" type="button" data-i="'+b.i+'" aria-label="Abrir el buzón de '+esc(b.nombre)+'"><span class="cara">'+SELLO+
+      '<span><span class="para">Para</span><br><span class="nombre">'+esc(b.nombre)+'</span></span>'+
+      '<span class="pie"><span>'+n+(n===1?' opción':' opciones')+' de regalo</span><span class="abrir">Abrir ›</span></span></span></button>';
+  }).join("");
+}
+$("buscar").addEventListener("input", render);
+$("buzones").addEventListener("click", e => { const p = e.target.closest(".postal"); if (p) abrirCarta(Number(p.dataset.i)); });
+
+function abrirCarta(i){
+  abierto = i; const b = estado.buzones[i];
+  $("c-nombre").textContent = b.nombre;
+  $("c-regalos").innerHTML = b.opciones.map((o,k)=>{
+    const f = fotoOk(o.foto), l = seguro(o.link);
+    return '<li class="regalo">'+(f ? '<img src="'+esc(f)+'" alt="'+esc(o.titulo)+'" onerror="this.outerHTML=\'<span class=&quot;sinfoto&quot;>Sin foto</span>\'">' : '<span class="sinfoto">Sin foto</span>')+
+      '<div><p class="num">Opción '+(k+1)+'</p><p class="tit">'+esc(o.titulo)+'</p>'+
+      (l ? '<a href="'+esc(l)+'" target="_blank" rel="noopener">Ver artículo ›</a>' : '')+'</div></li>';
+  }).join("");
+  $("s-nombre").textContent = b.nombre;
+  const d = $("dlg-carta"); clearTimeout(timerSobre);
+  d.classList.remove("fase-sobre","fase-carta"); void d.offsetWidth;
+  d.showModal();
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { d.classList.add("fase-carta"); return; }
+  d.classList.add("fase-sobre");
+  timerSobre = setTimeout(()=>{ d.classList.remove("fase-sobre"); d.classList.add("fase-carta"); }, 2000);
+}
+$("dlg-carta").addEventListener("close", ()=>{ clearTimeout(timerSobre); $("dlg-carta").classList.remove("fase-sobre","fase-carta"); });
+document.querySelectorAll("[data-cerrar]").forEach(b => b.addEventListener("click", () => b.closest("dialog").close()));
+document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", e => { if (e.target === d) d.close(); }));
+
+render();
+fetch("buzones.json", {cache:"no-store"}).then(r => r.ok ? r.json() : {buzones:[]}).then(data => {
+  estado.buzones = (data.buzones||[]).filter(b => b && b.nombre).map(b => ({nombre:String(b.nombre), opciones:(b.opciones||[]).map(norm).filter(o=>o.titulo)}));
+  render();
+}).catch(()=>{});
+</script>
+</body>
+</html>
