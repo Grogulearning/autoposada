@@ -328,6 +328,13 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
         <span class="foto-actual" id="f-fa3" hidden>Ya tiene foto. <label class="check"><input type="checkbox" id="f-qf3"> Quitar foto</label></span>
         <button class="quitar" type="button" data-quitar="3">Quitar este artículo</button>
       </fieldset>
+      <fieldset id="f-op4"><legend>Opción 4 (opcional)</legend>
+        <label for="f-t4">Artículo<input id="f-t4" maxlength="100" autocomplete="off"></label>
+        <label for="f-l4">Enlace<input id="f-l4" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
+        <label for="f-p4">Foto<input id="f-p4" type="file" accept="image/*"></label>
+        <span class="foto-actual" id="f-fa4" hidden>Ya tiene foto. <label class="check"><input type="checkbox" id="f-qf4"> Quitar foto</label></span>
+        <button class="quitar" type="button" data-quitar="4">Quitar este artículo</button>
+      </fieldset>
       <label for="f-pin" id="f-pin-label">Crea un PIN de 4 dígitos<input id="f-pin" inputmode="numeric" pattern="[0-9]{4,8}" minlength="4" maxlength="8" autocomplete="off" required></label>
       <p class="prev" id="f-pin-ayuda">Guárdalo: lo necesitas para editar o borrar tu buzón después.</p>
       <p class="aviso" id="f-error" hidden></p>
@@ -431,7 +438,7 @@ const SUPABASE_URL = "https://yopldnopxqozbsloiqvt.supabase.co";
 const SUPABASE_KEY = "sb_publishable_YbgG_Y-PViduS4egslqq0w_lBKXwwCB";
 const sb = (SUPABASE_URL && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 let base = [], nube = [];
-function limpiar(b){ return {id:b.id||null, nombre:String(b.nombre).trim().slice(0,40), opciones:(b.opciones||[]).map(norm).filter(o=>o.titulo).slice(0,3)}; }
+function limpiar(b){ return {id:b.id||null, nombre:String(b.nombre).trim().slice(0,40), opciones:(b.opciones||[]).map(norm).filter(o=>o.titulo).slice(0,4)}; }
 function combinar(){
   const m = new Map();
   [...base, ...nube].forEach(b => { if (b.nombre && b.opciones.length) m.set(b.nombre.toLowerCase(), b); });
@@ -494,13 +501,13 @@ function reducir(file){
 function abrirForm(b){
   $("form-buzon").reset(); $("f-error").hidden = true;
   editId = b ? b.id : null;
-  fotosPrevias = [0,1,2].map(k => (b && b.opciones[k] && b.opciones[k].foto) || "");
+  fotosPrevias = [0,1,2,3].map(k => (b && b.opciones[k] && b.opciones[k].foto) || "");
   $("f-titulo").textContent = b ? "Editar buzón" : "Mi buzón";
   $("f-pin-label").firstChild.textContent = b ? "Tu PIN" : "Crea un PIN de 4 dígitos";
   $("f-pin-ayuda").hidden = !!b;
   $("f-guardar").textContent = b ? "Guardar cambios" : "Guardar mi buzón";
   $("f-nombre").value = b ? b.nombre : "";
-  for (let k=1;k<=3;k++){
+  for (let k=1;k<=4;k++){
     const o = b && b.opciones[k-1];
     $("f-t"+k).value = o ? o.titulo : ""; $("f-l"+k).value = o ? o.link : "";
     $("f-fa"+k).hidden = !fotosPrevias[k-1];
@@ -522,7 +529,7 @@ $("form-buzon").addEventListener("submit", async e => {
   const btn = $("f-guardar"), txt = btn.textContent; btn.disabled = true; btn.textContent = "Guardando…";
   try {
     const opciones = [];
-    for (let k=1;k<=3;k++){
+    for (let k=1;k<=4;k++){
       const titulo = $("f-t"+k).value.trim(); if (!titulo) continue;
       let foto = $("f-qf"+k).checked ? "" : fotosPrevias[k-1];
       const f = $("f-p"+k).files[0];
