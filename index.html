@@ -254,6 +254,8 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
     <input class="buscador" id="buscar" type="search" placeholder="Busca un nombre" aria-label="Buscar un buzón por nombre">
     <div class="postales" id="buzones"></div>
     <p class="aviso" id="aviso" hidden></p>
+    <div class="acciones" id="zona-agregar" hidden><button class="btn btn-rojo" type="button" id="btn-agregar">Agregar mi buzón</button></div>
+    <p class="aviso" id="aviso" hidden></p>
   </section>
 
   <footer>
@@ -279,6 +281,39 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
     <ul class="regalos" id="c-regalos"></ul>
   </div>
 </dialog>
+
+<dialog id="dlg-form" class="form-carta" aria-label="Agregar mi buzón">
+  <div class="carta">
+    <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">×</button>
+    <form id="form-buzon">
+      <h3>Mi buzón</h3>
+      <p class="prev">Escribe tu nombre como te conocen en el trabajo. Si ya tenías buzón, se reemplaza con este.</p>
+      <label for="f-nombre">Tu nombre<input id="f-nombre" required maxlength="40" autocomplete="name"></label>
+      <fieldset><legend>Opción 1</legend>
+        <label for="f-t1">Artículo<input id="f-t1" required maxlength="100" autocomplete="off"></label>
+        <label for="f-l1">Enlace<input id="f-l1" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
+        <label for="f-p1">Foto<input id="f-p1" type="file" accept="image/*"></label>
+      </fieldset>
+      <fieldset><legend>Opción 2 (opcional)</legend>
+        <label for="f-t2">Artículo<input id="f-t2" maxlength="100" autocomplete="off"></label>
+        <label for="f-l2">Enlace<input id="f-l2" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
+        <label for="f-p2">Foto<input id="f-p2" type="file" accept="image/*"></label>
+      </fieldset>
+      <fieldset><legend>Opción 3 (opcional)</legend>
+        <label for="f-t3">Artículo<input id="f-t3" maxlength="100" autocomplete="off"></label>
+        <label for="f-l3">Enlace<input id="f-l3" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
+        <label for="f-p3">Foto<input id="f-p3" type="file" accept="image/*"></label>
+      </fieldset>
+      <p class="aviso" id="f-error" hidden></p>
+      <div class="acciones">
+        <button class="btn btn-rojo" type="submit" id="f-guardar">Guardar mi buzón</button>
+        <button class="btn btn-linea" type="button" data-cerrar>Cancelar</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 const estado = {buzones:[]};
 
@@ -365,11 +400,69 @@ $("dlg-carta").addEventListener("close", ()=>{ clearTimeout(timerSobre); $("dlg-
 document.querySelectorAll("[data-cerrar]").forEach(b => b.addEventListener("click", () => b.closest("dialog").close()));
 document.querySelectorAll("dialog").forEach(d => d.addEventListener("click", e => { if (e.target === d) d.close(); }));
 
+/* ---- Datos: buzones.json + Supabase ---- */
+const SUPABASE_URL = "https://yopldnopxqozbsloiqvt.supabase.co";
+const SUPABASE_KEY = "sb_publishable_YbgG_Y-PViduS4egslqq0w_lBKXwwCB";
+const sb = (SUPABASE_URL && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+let base = [], nube = [];
+function limpiar(b){ return {nombre:String(b.nombre).trim().slice(0,40), opciones:(b.opciones||[]).map(norm).filter(o=>o.titulo).slice(0,3)}; }
+function combinar(){
+  const m = new Map();
+  [...base, ...nube].forEach(b => { if (b.nombre && b.opciones.length) m.set(b.nombre.toLowerCase(), b); });
+  estado.buzones = [...m.values()]; render();
+}
+function aviso(t){ const a=$("aviso"); a.textContent=t; a.hidden=!t; }
+async function cargarNube(){
+  if (!sb) return;
+  const { data, error } = await sb.from("buzones").select("nombre,opciones,created_at").order("created_at",{ascending:true});
+  if (error) { aviso("No se pudieron cargar algunos buzones. Recarga la página."); return; }
+  nube = data.map(limpiar); combinar();
+}
 render();
-fetch("buzones.json", {cache:"no-store"}).then(r => r.ok ? r.json() : {buzones:[]}).then(data => {
-  estado.buzones = (data.buzones||[]).filter(b => b && b.nombre).map(b => ({nombre:String(b.nombre), opciones:(b.opciones||[]).map(norm).filter(o=>o.titulo)}));
-  render();
-}).catch(()=>{});
+fetch("buzones.json",{cache:"no-store"}).then(r=>r.ok?r.json():{buzones:[]}).then(d=>{ base=(d.buzones||[]).filter(b=>b&&b.nombre).map(limpiar); combinar(); }).catch(()=>{});
+cargarNube();
+
+/* ---- Agregar mi buzón ---- */
+if (sb) $("zona-agregar").hidden = false;
+function reducir(file){
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => { const img = new Image(); img.onload = () => {
+      const max = 480, k = Math.min(1, max/Math.max(img.width, img.height));
+      const c = document.createElement("canvas"); c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
+      const x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+      c.toBlob(b => b ? res(b) : rej(new Error("foto")), "image/jpeg", .78); }; img.onerror = rej; img.src = r.result; };
+    r.onerror = rej; r.readAsDataURL(file);
+  });
+}
+$("btn-agregar").addEventListener("click", () => { $("form-buzon").reset(); $("f-error").hidden = true; $("dlg-form").showModal(); });
+$("form-buzon").addEventListener("submit", async e => {
+  e.preventDefault();
+  const err = t => { $("f-error").textContent = t; $("f-error").hidden = false; };
+  const nombre = $("f-nombre").value.trim(); if (!nombre) return;
+  const btn = $("f-guardar"); btn.disabled = true; btn.textContent = "Guardando…";
+  try {
+    const opciones = [];
+    for (let k=1;k<=3;k++){
+      const titulo = $("f-t"+k).value.trim(); if (!titulo) continue;
+      let foto = "";
+      const f = $("f-p"+k).files[0];
+      if (f) {
+        const blob = await reducir(f);
+        const ruta = (crypto.randomUUID ? crypto.randomUUID() : Date.now()+"-"+k) + ".jpg";
+        const up = await sb.storage.from("fotos").upload(ruta, blob, {contentType:"image/jpeg"});
+        if (up.error) throw new Error("No se pudo subir la foto de la opción "+k+". Prueba con otra imagen.");
+        foto = sb.storage.from("fotos").getPublicUrl(ruta).data.publicUrl;
+      }
+      opciones.push({titulo, link: seguro($("f-l"+k).value.trim()), foto});
+    }
+    if (!opciones.length) throw new Error("Escribe al menos un artículo.");
+    const { error } = await sb.from("buzones").insert({nombre, opciones});
+    if (error) throw new Error("No se pudo guardar. Revisa tu conexión e intenta de nuevo.");
+    $("dlg-form").close(); await cargarNube(); aviso("¡Listo! Tu buzón ya está en la invitación.");
+  } catch (x) { err(x.message || "No se pudo guardar. Intenta de nuevo."); }
+  finally { btn.disabled = false; btn.textContent = "Guardar mi buzón"; }
+});
 </script>
 </body>
 </html>
