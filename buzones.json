@@ -1,24 +1,3 @@
 {
-  "buzones": [
-    {
-      "nombre": "Ejemplo",
-      "opciones": [
-        {
-          "titulo": "Cámara Web Logitech C270 HD720 Negra",
-          "link": "https://www.mercadolibre.com.mx/camara-web-logitech-c270-hd720-negra/p/MLM42120967",
-          "foto": "fotos/ejemplo-camara.svg"
-        }
-      ]
-    },
-    {
-      "nombre": "Ana",
-      "opciones": [
-        {
-          "titulo": "Camara",
-          "link": "https://www.mercadolibre.com.mx/camara-web-dell-2k-qhd-wb3023/p/MLM29654163",
-          "foto": "fotos/ana-1.jpg"
-        }
-      ]
-    }
-  ]
+  "buzones": []
 }

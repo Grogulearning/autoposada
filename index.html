@@ -175,6 +175,13 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
 
 @media (max-width:400px){ .flor{width:92px;height:92px} .flor-b{width:104px;height:104px} .tarjeta{padding:46px 20px 40px} }
 @media (prefers-reduced-motion: reduce){ .flor svg,.brota,.entra{animation:none} }
+.pin-panel{display:flex;flex-direction:column;gap:10px;margin-top:16px;padding-top:14px;border-top:1px solid #e3d5b5}
+.pin-panel label{display:flex;flex-direction:column;gap:6px;font:500 .74rem var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--olivo)}
+.pin-panel input{padding:10px 12px;border:1px solid rgba(76,90,53,.4);background:#fffaf0;color:var(--olivo);font:500 1.1rem var(--body);letter-spacing:.3em}
+.quitar{align-self:flex-start;background:none;border:0;color:var(--rojo);font:500 .76rem var(--body);text-decoration:underline;cursor:pointer;padding:2px 0}
+.foto-actual{font-size:.8rem;color:var(--gris);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.form-carta label.check{flex-direction:row;align-items:center;gap:6px;text-transform:none;letter-spacing:0;font-size:.8rem;color:var(--rojo)}
+.form-carta label.check input{width:auto}
 </style>
 </head>
 <body>
@@ -279,31 +286,50 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
     <p class="para">Buzón de</p>
     <h3 id="c-nombre"></h3>
     <ul class="regalos" id="c-regalos"></ul>
+    <div class="admin" id="c-acciones" hidden>
+      <button class="btn btn-rojo" type="button" id="c-editar">Editar</button>
+      <button class="btn btn-linea" type="button" id="c-borrar">Borrar buzón</button>
+    </div>
+    <form class="pin-panel" id="c-pinform" hidden>
+      <label for="c-pin">Escribe tu PIN para borrar este buzón<input id="c-pin" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" required></label>
+      <p class="aviso" id="c-error" hidden></p>
+      <div class="acciones">
+        <button class="btn btn-rojo" type="submit" id="c-confirmar">Sí, borrar</button>
+        <button class="btn btn-linea" type="button" id="c-cancelar">Cancelar</button>
+      </div>
+    </form>
   </div>
 </dialog>
 
-<dialog id="dlg-form" class="form-carta" aria-label="Agregar mi buzón">
+<dialog id="dlg-form" class="form-carta" aria-label="Mi buzón">
   <div class="carta">
     <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">×</button>
     <form id="form-buzon">
-      <h3>Mi buzón</h3>
-      <p class="prev">Escribe tu nombre como te conocen en el trabajo. Si ya tenías buzón, se reemplaza con este.</p>
+      <h3 id="f-titulo">Mi buzón</h3>
       <label for="f-nombre">Tu nombre<input id="f-nombre" required maxlength="40" autocomplete="name"></label>
-      <fieldset><legend>Opción 1</legend>
+      <fieldset id="f-op1"><legend>Opción 1</legend>
         <label for="f-t1">Artículo<input id="f-t1" required maxlength="100" autocomplete="off"></label>
         <label for="f-l1">Enlace<input id="f-l1" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
         <label for="f-p1">Foto<input id="f-p1" type="file" accept="image/*"></label>
+        <span class="foto-actual" id="f-fa1" hidden>Ya tiene foto. <label class="check"><input type="checkbox" id="f-qf1"> Quitar foto</label></span>
+        <button class="quitar" type="button" data-quitar="1">Quitar este artículo</button>
       </fieldset>
-      <fieldset><legend>Opción 2 (opcional)</legend>
+      <fieldset id="f-op2"><legend>Opción 2 (opcional)</legend>
         <label for="f-t2">Artículo<input id="f-t2" maxlength="100" autocomplete="off"></label>
         <label for="f-l2">Enlace<input id="f-l2" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
         <label for="f-p2">Foto<input id="f-p2" type="file" accept="image/*"></label>
+        <span class="foto-actual" id="f-fa2" hidden>Ya tiene foto. <label class="check"><input type="checkbox" id="f-qf2"> Quitar foto</label></span>
+        <button class="quitar" type="button" data-quitar="2">Quitar este artículo</button>
       </fieldset>
-      <fieldset><legend>Opción 3 (opcional)</legend>
+      <fieldset id="f-op3"><legend>Opción 3 (opcional)</legend>
         <label for="f-t3">Artículo<input id="f-t3" maxlength="100" autocomplete="off"></label>
         <label for="f-l3">Enlace<input id="f-l3" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
         <label for="f-p3">Foto<input id="f-p3" type="file" accept="image/*"></label>
+        <span class="foto-actual" id="f-fa3" hidden>Ya tiene foto. <label class="check"><input type="checkbox" id="f-qf3"> Quitar foto</label></span>
+        <button class="quitar" type="button" data-quitar="3">Quitar este artículo</button>
       </fieldset>
+      <label for="f-pin" id="f-pin-label">Crea un PIN de 4 dígitos<input id="f-pin" inputmode="numeric" pattern="[0-9]{4,8}" minlength="4" maxlength="8" autocomplete="off" required></label>
+      <p class="prev" id="f-pin-ayuda">Guárdalo: lo necesitas para editar o borrar tu buzón después.</p>
       <p class="aviso" id="f-error" hidden></p>
       <div class="acciones">
         <button class="btn btn-rojo" type="submit" id="f-guardar">Guardar mi buzón</button>
@@ -379,7 +405,7 @@ function render(){
 $("buscar").addEventListener("input", render);
 $("buzones").addEventListener("click", e => { const p = e.target.closest(".postal"); if (p) abrirCarta(Number(p.dataset.i)); });
 
-function abrirCarta(i){
+var abrirCarta = function(i){
   abierto = i; const b = estado.buzones[i];
   $("c-nombre").textContent = b.nombre;
   $("c-regalos").innerHTML = b.opciones.map((o,k)=>{
@@ -405,7 +431,7 @@ const SUPABASE_URL = "https://yopldnopxqozbsloiqvt.supabase.co";
 const SUPABASE_KEY = "sb_publishable_YbgG_Y-PViduS4egslqq0w_lBKXwwCB";
 const sb = (SUPABASE_URL && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 let base = [], nube = [];
-function limpiar(b){ return {nombre:String(b.nombre).trim().slice(0,40), opciones:(b.opciones||[]).map(norm).filter(o=>o.titulo).slice(0,3)}; }
+function limpiar(b){ return {id:b.id||null, nombre:String(b.nombre).trim().slice(0,40), opciones:(b.opciones||[]).map(norm).filter(o=>o.titulo).slice(0,3)}; }
 function combinar(){
   const m = new Map();
   [...base, ...nube].forEach(b => { if (b.nombre && b.opciones.length) m.set(b.nombre.toLowerCase(), b); });
@@ -414,7 +440,7 @@ function combinar(){
 function aviso(t){ const a=$("aviso"); a.textContent=t; a.hidden=!t; }
 async function cargarNube(){
   if (!sb) return;
-  const { data, error } = await sb.from("buzones").select("nombre,opciones,created_at").order("created_at",{ascending:true});
+  const { data, error } = await sb.from("buzones").select("id,nombre,opciones,created_at").order("created_at",{ascending:true});
   if (error) { aviso("No se pudieron cargar algunos buzones. Recarga la página."); return; }
   nube = data.map(limpiar); combinar();
 }
@@ -422,7 +448,37 @@ render();
 fetch("buzones.json",{cache:"no-store"}).then(r=>r.ok?r.json():{buzones:[]}).then(d=>{ base=(d.buzones||[]).filter(b=>b&&b.nombre).map(limpiar); combinar(); }).catch(()=>{});
 cargarNube();
 
-/* ---- Agregar mi buzón ---- */
+const MENSAJES = {
+  pin: "PIN incorrecto. Intenta de nuevo.",
+  pin_invalido: "El PIN debe tener de 4 a 8 números.",
+  bloqueado: "Demasiados intentos con PIN incorrecto. Pídele a la organizadora que lo edite por ti.",
+  no_existe: "Este buzón ya no existe. Recarga la página.",
+  nombre_existe: "Ya hay un buzón con ese nombre. Si es tuyo, ábrelo y toca Editar."
+};
+
+/* ---- Abrir carta: acciones ---- */
+const _abrir = abrirCarta;
+abrirCarta = function(i){
+  _abrir(i);
+  const b = estado.buzones[i];
+  $("c-acciones").hidden = !(sb && b.id);
+  $("c-pinform").hidden = true; $("c-error").hidden = true;
+};
+$("c-editar").addEventListener("click", () => { const b = estado.buzones[abierto]; $("dlg-carta").close(); abrirForm(b); });
+$("c-borrar").addEventListener("click", () => { $("c-pinform").reset(); $("c-pinform").hidden = false; $("c-acciones").hidden = true; $("c-pin").focus(); });
+$("c-cancelar").addEventListener("click", () => { $("c-pinform").hidden = true; $("c-acciones").hidden = false; });
+$("c-pinform").addEventListener("submit", async e => {
+  e.preventDefault();
+  const b = estado.buzones[abierto]; const btn = $("c-confirmar");
+  btn.disabled = true; btn.textContent = "Borrando…";
+  const { data, error } = await sb.rpc("borrar_buzon", { p_id: b.id, p_pin: $("c-pin").value.trim() });
+  btn.disabled = false; btn.textContent = "Sí, borrar";
+  if (error || data !== "ok") { $("c-error").textContent = error ? "No se pudo borrar. Revisa tu conexión." : (MENSAJES[data] || "No se pudo borrar."); $("c-error").hidden = false; return; }
+  $("dlg-carta").close(); await cargarNube(); aviso("Buzón borrado.");
+});
+
+/* ---- Formulario: agregar o editar ---- */
+let editId = null, fotosPrevias = [];
 if (sb) $("zona-agregar").hidden = false;
 function reducir(file){
   return new Promise((res, rej) => {
@@ -435,17 +491,40 @@ function reducir(file){
     r.onerror = rej; r.readAsDataURL(file);
   });
 }
-$("btn-agregar").addEventListener("click", () => { $("form-buzon").reset(); $("f-error").hidden = true; $("dlg-form").showModal(); });
+function abrirForm(b){
+  $("form-buzon").reset(); $("f-error").hidden = true;
+  editId = b ? b.id : null;
+  fotosPrevias = [0,1,2].map(k => (b && b.opciones[k] && b.opciones[k].foto) || "");
+  $("f-titulo").textContent = b ? "Editar buzón" : "Mi buzón";
+  $("f-pin-label").firstChild.textContent = b ? "Tu PIN" : "Crea un PIN de 4 dígitos";
+  $("f-pin-ayuda").hidden = !!b;
+  $("f-guardar").textContent = b ? "Guardar cambios" : "Guardar mi buzón";
+  $("f-nombre").value = b ? b.nombre : "";
+  for (let k=1;k<=3;k++){
+    const o = b && b.opciones[k-1];
+    $("f-t"+k).value = o ? o.titulo : ""; $("f-l"+k).value = o ? o.link : "";
+    $("f-fa"+k).hidden = !fotosPrevias[k-1];
+  }
+  $("dlg-form").showModal();
+}
+$("btn-agregar").addEventListener("click", () => abrirForm(null));
+document.querySelectorAll("[data-quitar]").forEach(btn => btn.addEventListener("click", () => {
+  const k = btn.dataset.quitar;
+  $("f-t"+k).value = ""; $("f-l"+k).value = ""; $("f-p"+k).value = "";
+  fotosPrevias[k-1] = ""; $("f-fa"+k).hidden = true;
+}));
 $("form-buzon").addEventListener("submit", async e => {
   e.preventDefault();
   const err = t => { $("f-error").textContent = t; $("f-error").hidden = false; };
-  const nombre = $("f-nombre").value.trim(); if (!nombre) return;
-  const btn = $("f-guardar"); btn.disabled = true; btn.textContent = "Guardando…";
+  const nombre = $("f-nombre").value.trim(), pin = $("f-pin").value.trim();
+  if (!nombre) return;
+  if (!/^[0-9]{4,8}$/.test(pin)) return err(MENSAJES.pin_invalido);
+  const btn = $("f-guardar"), txt = btn.textContent; btn.disabled = true; btn.textContent = "Guardando…";
   try {
     const opciones = [];
     for (let k=1;k<=3;k++){
       const titulo = $("f-t"+k).value.trim(); if (!titulo) continue;
-      let foto = "";
+      let foto = $("f-qf"+k).checked ? "" : fotosPrevias[k-1];
       const f = $("f-p"+k).files[0];
       if (f) {
         const blob = await reducir(f);
@@ -457,11 +536,15 @@ $("form-buzon").addEventListener("submit", async e => {
       opciones.push({titulo, link: seguro($("f-l"+k).value.trim()), foto});
     }
     if (!opciones.length) throw new Error("Escribe al menos un artículo.");
-    const { error } = await sb.from("buzones").insert({nombre, opciones});
-    if (error) throw new Error("No se pudo guardar. Revisa tu conexión e intenta de nuevo.");
-    $("dlg-form").close(); await cargarNube(); aviso("¡Listo! Tu buzón ya está en la invitación.");
+    const r = editId
+      ? await sb.rpc("editar_buzon", { p_id: editId, p_pin: pin, p_nombre: nombre, p_opciones: opciones })
+      : await sb.rpc("crear_buzon", { p_nombre: nombre, p_opciones: opciones, p_pin: pin });
+    if (r.error) throw new Error("No se pudo guardar. Revisa tu conexión e intenta de nuevo.");
+    if (r.data !== "ok") throw new Error(MENSAJES[r.data] || "No se pudo guardar.");
+    $("dlg-form").close(); await cargarNube();
+    aviso(editId ? "Cambios guardados." : "¡Listo! Tu buzón ya está en la invitación. No olvides tu PIN.");
   } catch (x) { err(x.message || "No se pudo guardar. Intenta de nuevo."); }
-  finally { btn.disabled = false; btn.textContent = "Guardar mi buzón"; }
+  finally { btn.disabled = false; btn.textContent = txt; }
 });
 </script>
 </body>
