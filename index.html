@@ -392,7 +392,7 @@ const SELLO = '<span class="sello"><div><svg viewBox="0 0 120 120"><use href="#n
 function render(){
   const q = ($("buscar").value||"").trim().toLowerCase();
   const cont = $("buzones");
-  if (!estado.buzones.length){ cont.innerHTML = '<div class="vacio">Los buzones se irán llenando con las opciones de regalo que cada quien comparta en el grupo de WhatsApp.</div>'; return; }
+  if (!estado.buzones.length){ cont.innerHTML = ''; return; }
   const lista = estado.buzones.map((b,i)=>({...b,i})).filter(b=>!q || b.nombre.toLowerCase().includes(q)).sort((a,b)=>a.nombre.localeCompare(b.nombre,"es"));
   if (!lista.length){ cont.innerHTML = '<div class="vacio">No hay ningún buzón con ese nombre.</div>'; return; }
   cont.innerHTML = lista.map(b => {
