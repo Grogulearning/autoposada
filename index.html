@@ -182,6 +182,26 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
 .foto-actual{font-size:.8rem;color:var(--gris);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .form-carta label.check{flex-direction:row;align-items:center;gap:6px;text-transform:none;letter-spacing:0;font-size:.8rem;color:var(--rojo)}
 .form-carta label.check input{width:auto}
+.pv{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center;background:#fff;border:1px solid #e3d5b5;border-radius:10px;padding:8px;font-size:.82rem;color:var(--olivo)}
+.pv img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:6px}
+.pv .dom{font-size:.7rem;color:var(--gris)}
+.pv.cargando{display:block;color:var(--gris);font-style:italic}
+.regalo{display:block;padding:0;overflow:hidden;border-radius:12px;background:#fff;box-shadow:0 2px 8px rgba(60,20,10,.12)}
+.regalo .tienda{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
+.regalo .ico{width:22px;height:22px;border-radius:6px;background:var(--rojo);color:var(--crema);display:grid;place-items:center;font:600 .7rem var(--body);flex:none}
+.regalo .tienda-txt{min-width:0}
+.regalo .tit{font-family:var(--body);font-size:.92rem;font-weight:500;line-height:1.25;color:#1f5bd1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.regalo .dom{font-size:.72rem;color:var(--gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.regalo .img{margin:4px 12px 10px;border:1px solid #e6e0d2;border-radius:10px;background:#fff;display:grid;place-items:center;height:190px;overflow:hidden}
+.regalo .img img{max-width:100%;max-height:100%;object-fit:contain;width:auto;height:auto;background:#fff}
+.regalo .pie-r{display:flex;justify-content:space-between;align-items:center;padding:8px 12px 10px;border-top:1px solid #f0ebe0}
+.regalo .num{font:600 .64rem var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
+.regalo a.tit{display:-webkit-box;margin:0;text-transform:none;letter-spacing:0;font:500 .92rem/1.25 var(--body);color:#1f5bd1}
+.pv.sinimg{grid-template-columns:1fr}
+.regalo a.ver{margin:0;font:600 .72rem var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--rojo)}
+.form-carta textarea{padding:9px 11px;border:1px solid rgba(76,90,53,.4);background:#fffaf0;color:var(--olivo);font:400 .92rem/1.5 var(--body);text-transform:none;letter-spacing:0;resize:vertical}
+.mensaje{position:relative;margin:0 0 16px;padding:14px 16px;background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(111,106,92,.14) 27px 28px),#fffaf0;border-left:3px solid var(--rojo);
+  font-family:var(--serif);font-size:1.12rem;font-style:italic;line-height:28px;color:#3e4a2b;white-space:pre-line;word-break:break-word}
 </style>
 </head>
 <body>
@@ -285,6 +305,7 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
     <button class="cerrar" type="button" data-cerrar aria-label="Cerrar">×</button>
     <p class="para">Buzón de</p>
     <h3 id="c-nombre"></h3>
+    <div class="mensaje" id="c-msg" hidden></div>
     <ul class="regalos" id="c-regalos"></ul>
     <div class="admin" id="c-acciones" hidden>
       <button class="btn btn-rojo" type="button" id="c-editar">Editar</button>
@@ -307,30 +328,35 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
     <form id="form-buzon">
       <h3 id="f-titulo">Mi buzón</h3>
       <label for="f-nombre">Tu nombre<input id="f-nombre" required maxlength="40" autocomplete="name"></label>
+      <label for="f-msg">Mensaje para tu amigo secreto (opcional)<textarea id="f-msg" rows="4" maxlength="800" placeholder="Holi, amigo secreto: estas son mis opciones…"></textarea></label>
       <fieldset id="f-op1"><legend>Opción 1</legend>
-        <label for="f-t1">Artículo<input id="f-t1" required maxlength="100" autocomplete="off"></label>
-        <label for="f-l1">Enlace<input id="f-l1" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
+        <label for="f-l1">Enlace<input id="f-l1" type="url" maxlength="600" autocomplete="off" placeholder="Pega el enlace del producto"></label>
+        <div class="pv" id="f-pv1" hidden></div>
+        <label for="f-t1">Nombre del artículo<input id="f-t1" maxlength="100" autocomplete="off"></label>
         <label for="f-p1">Foto<input id="f-p1" type="file" accept="image/*"></label>
         <span class="foto-actual" id="f-fa1" hidden>Ya tiene foto. <label class="check"><input type="checkbox" id="f-qf1"> Quitar foto</label></span>
         <button class="quitar" type="button" data-quitar="1">Quitar este artículo</button>
       </fieldset>
       <fieldset id="f-op2"><legend>Opción 2 (opcional)</legend>
-        <label for="f-t2">Artículo<input id="f-t2" maxlength="100" autocomplete="off"></label>
-        <label for="f-l2">Enlace<input id="f-l2" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
+        <label for="f-l2">Enlace<input id="f-l2" type="url" maxlength="600" autocomplete="off" placeholder="Pega el enlace del producto"></label>
+        <div class="pv" id="f-pv2" hidden></div>
+        <label for="f-t2">Nombre del artículo<input id="f-t2" maxlength="100" autocomplete="off"></label>
         <label for="f-p2">Foto<input id="f-p2" type="file" accept="image/*"></label>
         <span class="foto-actual" id="f-fa2" hidden>Ya tiene foto. <label class="check"><input type="checkbox" id="f-qf2"> Quitar foto</label></span>
         <button class="quitar" type="button" data-quitar="2">Quitar este artículo</button>
       </fieldset>
       <fieldset id="f-op3"><legend>Opción 3 (opcional)</legend>
-        <label for="f-t3">Artículo<input id="f-t3" maxlength="100" autocomplete="off"></label>
-        <label for="f-l3">Enlace<input id="f-l3" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
+        <label for="f-l3">Enlace<input id="f-l3" type="url" maxlength="600" autocomplete="off" placeholder="Pega el enlace del producto"></label>
+        <div class="pv" id="f-pv3" hidden></div>
+        <label for="f-t3">Nombre del artículo<input id="f-t3" maxlength="100" autocomplete="off"></label>
         <label for="f-p3">Foto<input id="f-p3" type="file" accept="image/*"></label>
         <span class="foto-actual" id="f-fa3" hidden>Ya tiene foto. <label class="check"><input type="checkbox" id="f-qf3"> Quitar foto</label></span>
         <button class="quitar" type="button" data-quitar="3">Quitar este artículo</button>
       </fieldset>
       <fieldset id="f-op4"><legend>Opción 4 (opcional)</legend>
-        <label for="f-t4">Artículo<input id="f-t4" maxlength="100" autocomplete="off"></label>
-        <label for="f-l4">Enlace<input id="f-l4" type="url" maxlength="600" autocomplete="off" placeholder="https://"></label>
+        <label for="f-l4">Enlace<input id="f-l4" type="url" maxlength="600" autocomplete="off" placeholder="Pega el enlace del producto"></label>
+        <div class="pv" id="f-pv4" hidden></div>
+        <label for="f-t4">Nombre del artículo<input id="f-t4" maxlength="100" autocomplete="off"></label>
         <label for="f-p4">Foto<input id="f-p4" type="file" accept="image/*"></label>
         <span class="foto-actual" id="f-fa4" hidden>Ya tiene foto. <label class="check"><input type="checkbox" id="f-qf4"> Quitar foto</label></span>
         <button class="quitar" type="button" data-quitar="4">Quitar este artículo</button>
@@ -391,7 +417,7 @@ if (tic()) { const t = setInterval(()=>{ if(!tic()) clearInterval(t); }, 1000); 
 let abierto = -1, timerSobre = 0;
 const $ = id => document.getElementById(id);
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function norm(o){ return typeof o === "string" ? {titulo:o, link:"", foto:""} : {titulo:o.titulo||"", link:o.link||"", foto:o.foto||""}; }
+function norm(o){ return typeof o === "string" ? {titulo:o, link:"", foto:"", sitio:"", dominio:""} : {titulo:o.titulo||"", link:o.link||"", foto:o.foto||"", sitio:o.sitio||"", dominio:o.dominio||""}; }
 function seguro(u){ return /^https?:\/\//i.test(u) ? u : ""; }
 function fotoOk(u){ return /^(data:image\/|fotos\/|https:\/\/)/.test(u) ? u : ""; }
 const SELLO = '<span class="sello"><div><svg viewBox="0 0 120 120"><use href="#nochebuena"/></svg></div></span><span class="matasellos">GDL<br>11·DIC<br>2026</span>';
@@ -417,9 +443,14 @@ var abrirCarta = function(i){
   $("c-nombre").textContent = b.nombre;
   $("c-regalos").innerHTML = b.opciones.map((o,k)=>{
     const f = fotoOk(o.foto), l = seguro(o.link);
-    return '<li class="regalo">'+(f ? '<img src="'+esc(f)+'" alt="'+esc(o.titulo)+'" onerror="this.outerHTML=\'<span class=&quot;sinfoto&quot;>Sin foto</span>\'">' : '<span class="sinfoto">Sin foto</span>')+
-      '<div><p class="num">Opción '+(k+1)+'</p><p class="tit">'+esc(o.titulo)+'</p>'+
-      (l ? '<a href="'+esc(l)+'" target="_blank" rel="noopener">Ver artículo ›</a>' : '')+'</div></li>';
+    let dom = o.dominio || ""; if (!dom && l) { try { dom = new URL(l).hostname.replace(/^www\./,""); } catch(_){} }
+    const sitio = o.sitio || dom;
+    const ini = (sitio || o.titulo || "?").trim().charAt(0).toUpperCase();
+    const titulo = l ? '<a class="tit" href="'+esc(l)+'" target="_blank" rel="noopener">'+esc(o.titulo)+'</a>' : '<p class="tit" style="color:var(--olivo)">'+esc(o.titulo)+'</p>';
+    return '<li class="regalo"><div class="tienda"><span class="ico">'+esc(ini)+'</span><div class="tienda-txt">'+titulo+
+      (dom ? '<p class="dom">'+esc(dom)+'</p>' : '')+'</div></div>'+
+      (f ? '<div class="img"><img src="'+esc(f)+'" alt="'+esc(o.titulo)+'" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"></div>' : '')+
+      '<div class="pie-r"><span class="num">Opción '+(k+1)+'</span>'+(l ? '<a class="ver" href="'+esc(l)+'" target="_blank" rel="noopener">Ver en tienda ›</a>' : '')+'</div></li>';
   }).join("");
   $("s-nombre").textContent = b.nombre;
   const d = $("dlg-carta"); clearTimeout(timerSobre);
@@ -438,7 +469,7 @@ const SUPABASE_URL = "https://yopldnopxqozbsloiqvt.supabase.co";
 const SUPABASE_KEY = "sb_publishable_YbgG_Y-PViduS4egslqq0w_lBKXwwCB";
 const sb = (SUPABASE_URL && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 let base = [], nube = [];
-function limpiar(b){ return {id:b.id||null, nombre:String(b.nombre).trim().slice(0,40), opciones:(b.opciones||[]).map(norm).filter(o=>o.titulo).slice(0,4)}; }
+function limpiar(b){ return {id:b.id||null, mensaje:String(b.mensaje||"").slice(0,800), nombre:String(b.nombre).trim().slice(0,40), opciones:(b.opciones||[]).map(norm).filter(o=>o.titulo).slice(0,4)}; }
 function combinar(){
   const m = new Map();
   [...base, ...nube].forEach(b => { if (b.nombre && b.opciones.length) m.set(b.nombre.toLowerCase(), b); });
@@ -447,7 +478,7 @@ function combinar(){
 function aviso(t){ const a=$("aviso"); a.textContent=t; a.hidden=!t; }
 async function cargarNube(){
   if (!sb) return;
-  const { data, error } = await sb.from("buzones").select("id,nombre,opciones,created_at").order("created_at",{ascending:true});
+  const { data, error } = await sb.from("buzones").select("id,nombre,opciones,mensaje,created_at").order("created_at",{ascending:true});
   if (error) { aviso("No se pudieron cargar algunos buzones. Recarga la página."); return; }
   nube = data.map(limpiar); combinar();
 }
@@ -469,6 +500,7 @@ abrirCarta = function(i){
   _abrir(i);
   const b = estado.buzones[i];
   $("c-acciones").hidden = !(sb && b.id);
+  $("c-msg").textContent = b.mensaje || ""; $("c-msg").hidden = !b.mensaje;
   $("c-pinform").hidden = true; $("c-error").hidden = true;
 };
 $("c-editar").addEventListener("click", () => { const b = estado.buzones[abierto]; $("dlg-carta").close(); abrirForm(b); });
@@ -483,6 +515,44 @@ $("c-pinform").addEventListener("submit", async e => {
   if (error || data !== "ok") { $("c-error").textContent = error ? "No se pudo borrar. Revisa tu conexión." : (MENSAJES[data] || "No se pudo borrar."); $("c-error").hidden = false; return; }
   $("dlg-carta").close(); await cargarNube(); aviso("Buzón borrado.");
 });
+
+/* ---- Vista previa de enlaces ---- */
+const ANON_JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlvcGxkbm9weHFvemJzbG9pcXZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUyMDYyNzksImV4cCI6MjExMDc4MjI3OX0.rMTd4HECErFkTjmDFwZD7BuoYY9CrmZDKdfJ_EuW7l0";
+const previas = {}; const pvTimers = {};
+async function pedirPrevia(url){
+  const r = await fetch(SUPABASE_URL + "/functions/v1/vista-previa", { method:"POST",
+    headers:{ "Content-Type":"application/json", "Authorization":"Bearer "+ANON_JWT, "apikey":ANON_JWT }, body: JSON.stringify({url}) });
+  if (!r.ok) throw new Error("previa"); return r.json();
+}
+function pintarPrevia(k){
+  const pv = $("f-pv"+k), p = previas[k];
+  if (!p) { pv.hidden = true; pv.className = "pv"; pv.innerHTML = ""; return; }
+  pv.hidden = false;
+  if (p.cargando) { pv.className = "pv cargando"; pv.textContent = "Buscando la vista previa…"; return; }
+  pv.className = p.imagen ? "pv" : "pv sinimg";
+  pv.innerHTML = (p.imagen ? '<img src="'+esc(p.imagen)+'" alt="" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add(\'sinimg\');this.remove()">' : '') +
+    '<div><strong>'+esc(p.titulo || "Sin título")+'</strong><p class="dom">'+esc(p.dominio||"")+'</p></div>';
+}
+async function actualizarPrevia(k){
+  const url = seguro($("f-l"+k).value.trim());
+  if (!url) { previas[k] = null; pintarPrevia(k); return; }
+  if (previas[k] && previas[k].url === url && !previas[k].cargando) return;
+  previas[k] = {url, cargando:true}; pintarPrevia(k);
+  try {
+    const d = await pedirPrevia(url);
+    if (!previas[k] || previas[k].url !== url) return;
+    previas[k] = {url, titulo:d.titulo||"", imagen:d.imagen||"", sitio:d.sitio||"", dominio:d.dominio||""};
+    if (d.titulo && !$("f-t"+k).value.trim()) $("f-t"+k).value = d.titulo.slice(0,100);
+  } catch(_) {
+    let dom = ""; try { dom = new URL(url).hostname.replace(/^www\./,""); } catch(e){}
+    previas[k] = {url, titulo:"", imagen:"", sitio:"", dominio:dom};
+  }
+  pintarPrevia(k);
+}
+for (let k=1;k<=4;k++){
+  $("f-l"+k).addEventListener("input", () => { clearTimeout(pvTimers[k]); pvTimers[k] = setTimeout(()=>actualizarPrevia(k), 600); });
+  $("f-l"+k).addEventListener("change", () => { clearTimeout(pvTimers[k]); actualizarPrevia(k); });
+}
 
 /* ---- Formulario: agregar o editar ---- */
 let editId = null, fotosPrevias = [];
@@ -507,10 +577,13 @@ function abrirForm(b){
   $("f-pin-ayuda").hidden = !!b;
   $("f-guardar").textContent = b ? "Guardar cambios" : "Guardar mi buzón";
   $("f-nombre").value = b ? b.nombre : "";
+  $("f-msg").value = b ? (b.mensaje || "") : "";
   for (let k=1;k<=4;k++){
     const o = b && b.opciones[k-1];
     $("f-t"+k).value = o ? o.titulo : ""; $("f-l"+k).value = o ? o.link : "";
     $("f-fa"+k).hidden = !fotosPrevias[k-1];
+    previas[k] = (o && o.link) ? {url:o.link, titulo:o.titulo, imagen:o.foto, sitio:o.sitio||"", dominio:o.dominio||""} : null;
+    pintarPrevia(k);
   }
   $("dlg-form").showModal();
 }
@@ -519,6 +592,7 @@ document.querySelectorAll("[data-quitar]").forEach(btn => btn.addEventListener("
   const k = btn.dataset.quitar;
   $("f-t"+k).value = ""; $("f-l"+k).value = ""; $("f-p"+k).value = "";
   fotosPrevias[k-1] = ""; $("f-fa"+k).hidden = true;
+  previas[k] = null; pintarPrevia(k);
 }));
 $("form-buzon").addEventListener("submit", async e => {
   e.preventDefault();
@@ -530,8 +604,14 @@ $("form-buzon").addEventListener("submit", async e => {
   try {
     const opciones = [];
     for (let k=1;k<=4;k++){
-      const titulo = $("f-t"+k).value.trim(); if (!titulo) continue;
-      let foto = $("f-qf"+k).checked ? "" : fotosPrevias[k-1];
+      const link = seguro($("f-l"+k).value.trim());
+      if (link && (!previas[k] || previas[k].url !== link || previas[k].cargando)) await actualizarPrevia(k);
+      const p = (link && previas[k] && previas[k].url === link) ? previas[k] : null;
+      const titulo = ($("f-t"+k).value.trim() || (p && p.titulo) || (p && p.dominio) || "").slice(0,100);
+      if (!titulo) continue;
+      const previa = fotosPrevias[k-1] || "";
+      const subida = previa.includes("/storage/v1/") || previa.startsWith("fotos/");
+      let foto = $("f-qf"+k).checked ? "" : (subida ? previa : ((p && p.imagen) || previa));
       const f = $("f-p"+k).files[0];
       if (f) {
         const blob = await reducir(f);
@@ -540,12 +620,12 @@ $("form-buzon").addEventListener("submit", async e => {
         if (up.error) throw new Error("No se pudo subir la foto de la opción "+k+". Prueba con otra imagen.");
         foto = sb.storage.from("fotos").getPublicUrl(ruta).data.publicUrl;
       }
-      opciones.push({titulo, link: seguro($("f-l"+k).value.trim()), foto});
+      opciones.push({titulo, link, foto, sitio: (p && p.sitio) || "", dominio: (p && p.dominio) || ""});
     }
-    if (!opciones.length) throw new Error("Escribe al menos un artículo.");
+    if (!opciones.length) throw new Error("Agrega al menos un artículo: pega su enlace o escribe su nombre.");
     const r = editId
-      ? await sb.rpc("editar_buzon", { p_id: editId, p_pin: pin, p_nombre: nombre, p_opciones: opciones })
-      : await sb.rpc("crear_buzon", { p_nombre: nombre, p_opciones: opciones, p_pin: pin });
+      ? await sb.rpc("editar_buzon", { p_id: editId, p_pin: pin, p_nombre: nombre, p_opciones: opciones, p_mensaje: $("f-msg").value.trim() })
+      : await sb.rpc("crear_buzon", { p_nombre: nombre, p_opciones: opciones, p_pin: pin, p_mensaje: $("f-msg").value.trim() });
     if (r.error) throw new Error("No se pudo guardar. Revisa tu conexión e intenta de nuevo.");
     if (r.data !== "ok") throw new Error(MENSAJES[r.data] || "No se pudo guardar.");
     $("dlg-form").close(); await cargarNube();
