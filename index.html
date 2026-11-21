@@ -198,6 +198,8 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
 .regalo .num{font:600 .64rem var(--body);letter-spacing:.2em;text-transform:uppercase;color:var(--oro)}
 .regalo a.tit{display:-webkit-box;margin:0;text-transform:none;letter-spacing:0;font:500 .92rem/1.25 var(--body);color:#1f5bd1}
 .pv.sinimg{grid-template-columns:1fr}
+.pv.aviso-pv{background:#fff8ec;border-color:#e8c98f}
+.pv.aviso-pv strong{color:var(--rojo)}
 .regalo a.ver{margin:0;font:600 .72rem var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--rojo)}
 .form-carta textarea{padding:9px 11px;border:1px solid rgba(76,90,53,.4);background:#fffaf0;color:var(--olivo);font:400 .92rem/1.5 var(--body);text-transform:none;letter-spacing:0;resize:vertical}
 .mensaje{position:relative;margin:0 0 16px;padding:14px 16px;background:repeating-linear-gradient(0deg,transparent 0 27px,rgba(111,106,92,.14) 27px 28px),#fffaf0;border-left:3px solid var(--rojo);
@@ -527,6 +529,11 @@ function pintarPrevia(k){
   if (!p) { pv.hidden = true; pv.className = "pv"; pv.innerHTML = ""; return; }
   pv.hidden = false;
   if (p.cargando) { pv.className = "pv cargando"; pv.textContent = "Buscando la vista previa…"; return; }
+  if (!p.titulo && !p.imagen) {
+    pv.className = "pv sinimg aviso-pv";
+    pv.innerHTML = '<div><strong>'+(/mercadolibre/i.test(p.dominio||"") ? "Mercado Libre no deja ver este producto desde aquí" : "No pudimos leer este enlace")+'</strong><p class="dom">Escribe el nombre del artículo abajo y, si quieres, sube una captura como foto. El enlace sí se guarda.</p></div>';
+    return;
+  }
   pv.className = p.imagen ? "pv" : "pv sinimg";
   pv.innerHTML = (p.imagen ? '<img src="'+esc(p.imagen)+'" alt="" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add(\'sinimg\');this.remove()">' : '') +
     '<div><strong>'+esc(p.titulo || "Sin título")+'</strong><p class="dom">'+esc(p.dominio||"")+'</p></div>';
