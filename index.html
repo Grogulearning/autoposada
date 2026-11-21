@@ -447,7 +447,7 @@ var abrirCarta = function(i){
     const sitio = o.sitio || dom;
     const ini = (sitio || o.titulo || "?").trim().charAt(0).toUpperCase();
     const titulo = l ? '<a class="tit" href="'+esc(l)+'" target="_blank" rel="noopener">'+esc(o.titulo)+'</a>' : '<p class="tit" style="color:var(--olivo)">'+esc(o.titulo)+'</p>';
-    return '<li class="regalo"><div class="tienda"><span class="ico">'+esc(ini)+'</span><div class="tienda-txt">'+titulo+
+    return '<li class="regalo"><div class="tienda"><span class="ico" aria-hidden="true">🎁</span><div class="tienda-txt">'+titulo+
       (dom ? '<p class="dom">'+esc(dom)+'</p>' : '')+'</div></div>'+
       (f ? '<div class="img"><img src="'+esc(f)+'" alt="'+esc(o.titulo)+'" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"></div>' : '')+
       '<div class="pie-r"><span class="num">Opción '+(k+1)+'</span>'+(l ? '<a class="ver" href="'+esc(l)+'" target="_blank" rel="noopener">Ver en tienda ›</a>' : '')+'</div></li>';
