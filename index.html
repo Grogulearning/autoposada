@@ -312,7 +312,7 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
       <button class="btn btn-linea" type="button" id="c-borrar">Borrar buzón</button>
     </div>
     <form class="pin-panel" id="c-pinform" hidden>
-      <label for="c-pin">Escribe tu PIN para borrar este buzón<input id="c-pin" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" required></label>
+      <label for="c-pin">PIN de la organizadora para borrar este buzón<input id="c-pin" inputmode="numeric" pattern="[0-9]*" maxlength="8" autocomplete="off" required></label>
       <p class="aviso" id="c-error" hidden></p>
       <div class="acciones">
         <button class="btn btn-rojo" type="submit" id="c-confirmar">Sí, borrar</button>
@@ -361,8 +361,6 @@ footer p:not(.firma){font-size:.8rem;letter-spacing:.22em;text-transform:upperca
         <span class="foto-actual" id="f-fa4" hidden>Ya tiene foto. <label class="check"><input type="checkbox" id="f-qf4"> Quitar foto</label></span>
         <button class="quitar" type="button" data-quitar="4">Quitar este artículo</button>
       </fieldset>
-      <label for="f-pin" id="f-pin-label">Crea un PIN de 4 dígitos<input id="f-pin" inputmode="numeric" pattern="[0-9]{4,8}" minlength="4" maxlength="8" autocomplete="off" required></label>
-      <p class="prev" id="f-pin-ayuda">Guárdalo: lo necesitas para editar o borrar tu buzón después.</p>
       <p class="aviso" id="f-error" hidden></p>
       <div class="acciones">
         <button class="btn btn-rojo" type="submit" id="f-guardar">Guardar mi buzón</button>
@@ -487,7 +485,7 @@ fetch("buzones.json",{cache:"no-store"}).then(r=>r.ok?r.json():{buzones:[]}).the
 cargarNube();
 
 const MENSAJES = {
-  pin: "PIN incorrecto. Intenta de nuevo.",
+  pin: "PIN incorrecto. Solo la organizadora puede borrar buzones.",
   pin_invalido: "El PIN debe tener de 4 a 8 números.",
   bloqueado: "Demasiados intentos con PIN incorrecto. Pídele a la organizadora que lo edite por ti.",
   no_existe: "Este buzón ya no existe. Recarga la página.",
@@ -573,8 +571,6 @@ function abrirForm(b){
   editId = b ? b.id : null;
   fotosPrevias = [0,1,2,3].map(k => (b && b.opciones[k] && b.opciones[k].foto) || "");
   $("f-titulo").textContent = b ? "Editar buzón" : "Mi buzón";
-  $("f-pin-label").firstChild.textContent = b ? "Tu PIN" : "Crea un PIN de 4 dígitos";
-  $("f-pin-ayuda").hidden = !!b;
   $("f-guardar").textContent = b ? "Guardar cambios" : "Guardar mi buzón";
   $("f-nombre").value = b ? b.nombre : "";
   $("f-msg").value = b ? (b.mensaje || "") : "";
@@ -597,9 +593,8 @@ document.querySelectorAll("[data-quitar]").forEach(btn => btn.addEventListener("
 $("form-buzon").addEventListener("submit", async e => {
   e.preventDefault();
   const err = t => { $("f-error").textContent = t; $("f-error").hidden = false; };
-  const nombre = $("f-nombre").value.trim(), pin = $("f-pin").value.trim();
+  const nombre = $("f-nombre").value.trim();
   if (!nombre) return;
-  if (!/^[0-9]{4,8}$/.test(pin)) return err(MENSAJES.pin_invalido);
   const btn = $("f-guardar"), txt = btn.textContent; btn.disabled = true; btn.textContent = "Guardando…";
   try {
     const opciones = [];
@@ -624,12 +619,12 @@ $("form-buzon").addEventListener("submit", async e => {
     }
     if (!opciones.length) throw new Error("Agrega al menos un artículo: pega su enlace o escribe su nombre.");
     const r = editId
-      ? await sb.rpc("editar_buzon", { p_id: editId, p_pin: pin, p_nombre: nombre, p_opciones: opciones, p_mensaje: $("f-msg").value.trim() })
-      : await sb.rpc("crear_buzon", { p_nombre: nombre, p_opciones: opciones, p_pin: pin, p_mensaje: $("f-msg").value.trim() });
+      ? await sb.rpc("editar_buzon", { p_id: editId, p_nombre: nombre, p_opciones: opciones, p_mensaje: $("f-msg").value.trim() })
+      : await sb.rpc("crear_buzon", { p_nombre: nombre, p_opciones: opciones, p_mensaje: $("f-msg").value.trim() });
     if (r.error) throw new Error("No se pudo guardar. Revisa tu conexión e intenta de nuevo.");
     if (r.data !== "ok") throw new Error(MENSAJES[r.data] || "No se pudo guardar.");
     $("dlg-form").close(); await cargarNube();
-    aviso(editId ? "Cambios guardados." : "¡Listo! Tu buzón ya está en la invitación. No olvides tu PIN.");
+    aviso(editId ? "Cambios guardados." : "¡Listo! Tu buzón ya está en la invitación.");
   } catch (x) { err(x.message || "No se pudo guardar. Intenta de nuevo."); }
   finally { btn.disabled = false; btn.textContent = txt; }
 });
